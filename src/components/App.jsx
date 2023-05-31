@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes} from 'react-router-dom'
+import ProtectedRoute from './ProtectedRoute'
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -143,8 +144,8 @@ function App(props) {
         <Routes>
           <Route 
           path="/" 
-          element={    
-          <Main
+          element={ <ProtectedRoute 
+          element={Main}
           onEditAvatar={handleEditAvatarClick}
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
