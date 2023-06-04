@@ -6,6 +6,9 @@
 /* header */
 @import url(./blocks/header/header.css);
 @import url(./blocks/header/__logo/header__logo.css);
+@import url(./blocks/header/__wrapper/header__wrapper.css);
+@import url(./blocks/header/header__link/header__link.css);
+@import url(./blocks/header/header__link/_muted/header__link_muted.css);
 /* main */
 @import url(./blocks/content/content.css);
 /* profile */
