@@ -15,18 +15,18 @@ function Header({email}) {
 
           <Route path="/" element={
             <>
-              <p className='header__link'>{email}</p>
+              <p className='header__link'>{}</p>
               <Link className='header__link header__link_muted' to='/sign-in'>Выйти</Link>
             </>
-          }></Route>
+          } />
 
           <Route path="/sign-up" element={
             <Link className='header__link' to='/sign-in'>Войти</Link>
-          }></Route>
+          } />
 
-          <Route path="/sign-in" element="">
+          <Route path="/sign-in" element={
             <Link className='header__link' to='/sign-up'>Регистрация</Link>
-          </Route>
+          } />
 
         </Routes>
       </div>
