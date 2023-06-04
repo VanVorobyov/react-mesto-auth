@@ -11,6 +11,7 @@ import EditProfiePopup from './EditProfiePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ConfirmDeletePopup from './ConfirmDeletePopup'
+import InfoTooltip from './InfoTooltip'
 import api from '../utils/Api.js';
 import {CurrentUserContext} from '../context/CurrentUserContext.js';
 
@@ -20,6 +21,7 @@ function App(props) {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isFullImagePopupOpen, setFullImagePopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setConfirmDeletePopupOpen] = useState(false);
+  const [isInfoTooltipPopupOpen, setInfoTooltipPopupOpen] = useState(false);
 
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState({});
@@ -134,6 +136,7 @@ function App(props) {
     setEditAvatarPopupOpen(false);
     setFullImagePopupOpen(false);
     setConfirmDeletePopupOpen(false)
+    setInfoTooltipPopupOpen(false)
     setSelectedCard({});
   };
 
@@ -191,6 +194,11 @@ function App(props) {
           isLoading={isLoading}
           onSubmit={handleCardDelete}
           />
+        <InfoTooltip
+        isOpen={isInfoTooltipPopupOpen}
+        onClose={closeAllPopups}
+        // isSuccess={}
+        />
 
 
       </div>

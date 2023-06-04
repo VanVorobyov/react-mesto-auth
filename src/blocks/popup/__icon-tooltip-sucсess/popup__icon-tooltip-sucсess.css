@@ -1,0 +1,9 @@
+.popup__icon-tooltip-sucсess{
+  width: 120px;
+  height: 120px;
+  background-image: url(../../../images/sugn-up-succes.svg);
+  background-repeat: no-repeat;
+
+  margin: 60px auto 0;
+}
+
