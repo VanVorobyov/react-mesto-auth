@@ -1,6 +1,6 @@
 import React from 'react'
 
-const auth = () => {
+const Login = () => {
   return (
     <div className='auth'>
       <div className="auth__wrapper">
@@ -19,4 +19,4 @@ const auth = () => {
   )
 }
 
-export default auth 
+export default Login 

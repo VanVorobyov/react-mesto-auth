@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const auth = () => {
+const Register = () => {
   return (
    <div className='auth'>
       <div className="auth__wrapper">
@@ -23,4 +23,4 @@ const auth = () => {
   )
 }
 
-export default auth 
+export default Register 
