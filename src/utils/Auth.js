@@ -15,7 +15,7 @@ class Auth {
     return fetch(url, options).then(this._checkResponse);
   }
 
-  registerUser({ email, password }) {
+  register({ email, password }) {
     return this._request(`${this._baseUrl}/signup`, {
       method: 'POST',
       headers: {
@@ -25,7 +25,7 @@ class Auth {
     }).then(res => this._checkResponse(res));
   }
 
-  loginUser({ email, password }) {
+  login({ email, password }) {
     return this._request(`${this._baseUrl}/signin`, {
       method: 'POST',
       headers: {
