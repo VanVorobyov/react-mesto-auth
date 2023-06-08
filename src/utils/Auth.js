@@ -36,7 +36,7 @@ class Auth {
   }
 
   checkToken(token) {
-    return this._request(`${this._baseUrl}/signin`, {
+    return this._request(`${this._baseUrl}/users/me`, {
       headers: {
         'Content-Type': 'application/json',
         "Authorization" : `Bearer ${token}`
