@@ -1,5 +1,5 @@
 class Auth {
-  constructor(baseUrl) {
+  constructor({ baseUrl }) {
     this._baseUrl = baseUrl;
   }
 
@@ -15,39 +15,38 @@ class Auth {
     return fetch(url, options).then(this._checkResponse);
   }
 
-  registerUser({ email, password }) {
+  register(email, password) {
     return this._request(`${this._baseUrl}/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({email, password}),
-    }).then(res => this._checkResponse(res));
+      body: JSON.stringify({ email, password }),
+    });
   }
 
-  loginUser({ email, password }) {
+  login(email, password) {
     return this._request(`${this._baseUrl}/signin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({email, password}),
-    }).then(res => this._checkResponse(res));
+      body: JSON.stringify({ email, password }),
+    });
   }
 
   checkToken(token) {
     return this._request(`${this._baseUrl}/users/me`, {
       headers: {
         'Content-Type': 'application/json',
-        "Authorization" : `Bearer ${token}`
-      }
-    }).then(res => this._checkResponse(res));
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => this._checkResponse(res));
   }
 }
 
 const auth = new Auth({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-64',
-
+  baseUrl: 'https://auth.nomoreparties.co',
 });
 
 export default auth;
