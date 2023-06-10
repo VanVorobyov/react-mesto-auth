@@ -125,10 +125,9 @@ function App(props) {
       .finally(() => setIsLoading(false));
   };
 
-  const handleRegisterUser = ({ email, password }) => {
-    setIsLoading(true);
+  const handleRegisterUser = (email, password) => {
     auth
-      .register({ email, password })
+      .register(email, password)
       .then((data) => {
         setIsSuccess(true);
         setUserEmail(data.email);
@@ -137,7 +136,7 @@ function App(props) {
         setIsSuccess(false);
         console.log(err);
       })
-      .finally(() => isInfoTooltipPopupOpen(true));
+      .finally(() => setInfoTooltipPopupOpen(true));
   };
 
   const handleLoginUser = ({ email, password }) => {
@@ -190,7 +189,7 @@ function App(props) {
             path="/sign-up"
             element={
               <Register
-                onSubmit={handleRegisterUser}
+                onRegister={handleRegisterUser}
                 userEmail={userEmail}
               />
             }
@@ -199,7 +198,7 @@ function App(props) {
             path="/sign-in"
             element={
               <Login
-                onSubmit={handleLoginUser}
+                onLogin={handleLoginUser}
                 userEmail={userEmail}
               />
             }
