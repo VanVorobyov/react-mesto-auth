@@ -4,11 +4,8 @@ class Auth {
   }
 
   _checkResponse(res) {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
-    }
+    if (res.ok) return res.json();
+    return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
   }
 
   _request(url, options) {
@@ -41,7 +38,7 @@ class Auth {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-    }).then((res) => this._checkResponse(res));
+    });
   }
 }
 
