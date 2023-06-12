@@ -1,16 +1,20 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import InfoTooltip from './InfoTooltip';
 import useValidation from '../hooks/useValidation';
 
 const Register = (props) => {
-  const { onRegister, isSuccess } = props;
-  const { values, handleChange, errors, isValid, resetForm } = useValidation({ email: '', password: '' });
+  const { onRegister, isSuccess, isLoggedIn } = props;
+  const { values, handleChange, resetForm } = useValidation({ email: '', password: '' });
 
   function handleSubmit(e) {
     e.preventDefault();
     onRegister(values.email, values.password);
   }
+
+  useEffect(() => {
+    if (isLoggedIn) resetForm();
+  }, [isLoggedIn, resetForm]);
 
   return (
     <div className="auth">

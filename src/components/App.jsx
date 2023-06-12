@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import Header from './Header';
 import Main from './Main';
@@ -26,13 +26,15 @@ function App(props) {
   const [isInfoTooltipPopupOpen, setInfoTooltipPopupOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [userEmail, setUserEmail] = useState('');
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState({});
   const [cardToDelete, setCardToDelete] = useState('');
   const [currentUser, setCurrentUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -131,6 +133,7 @@ function App(props) {
       .then((data) => {
         setIsSuccess(true);
         setUserEmail(data.email);
+        navigate('/sign-in');
       })
       .catch((err) => {
         setIsSuccess(false);
@@ -139,20 +142,50 @@ function App(props) {
       .finally(() => setInfoTooltipPopupOpen(true));
   };
 
-  const handleLoginUser = ({ email, password }) => {
-    setIsLoading(true);
+  const handleLoginUser = (email, password) => {
     auth
-      .register({ email, password })
+      .login(email, password)
       .then((data) => {
-        setIsSuccess(true);
-        setUserEmail(data.email);
+        localStorage.setItem('jwt', data.token);
+        setIsLoggedIn(true);
+        setUserEmail(email);
+        navigate('/');
       })
       .catch((err) => {
         setIsSuccess(false);
+        setInfoTooltipPopupOpen(true);
         console.log(err);
-      })
-      .finally(() => isInfoTooltipPopupOpen(true));
+      });
   };
+
+  const handleLogOut = () => {
+    localStorage.removeItem('jwt');
+    setIsLoggedIn(false);
+    navigate('/sign-in');
+  };
+
+  const checkToken = () => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          setIsLoggedIn(true);
+          setUserEmail(res.data.email);
+          navigate('/', { replace: true });
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoggedIn(false);
+        });
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
 
   const closeAllPopups = () => {
     setEditProfilePopupOpen(false);
@@ -167,13 +200,17 @@ function App(props) {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page__content">
-        <Header />
+        <Header
+          onSignOut={handleLogOut}
+          email={userEmail}
+        />
         <Routes>
           <Route
             path="/"
             element={
               <ProtectedRoute
                 element={Main}
+                isLoggedIn={isLoggedIn}
                 onEditAvatar={handleEditAvatarClick}
                 onEditProfile={handleEditProfileClick}
                 onAddPlace={handleAddPlaceClick}
@@ -200,6 +237,7 @@ function App(props) {
               <Login
                 onLogin={handleLoginUser}
                 userEmail={userEmail}
+                isLoggedIn={isLoggedIn}
               />
             }
           />
