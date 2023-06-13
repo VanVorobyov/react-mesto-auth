@@ -18,7 +18,7 @@ import auth from '../utils/Auth.js';
 
 import { CurrentUserContext } from '../context/CurrentUserContext.js';
 
-function App(props) {
+function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
@@ -50,6 +50,16 @@ function App(props) {
   const handleAddPlaceClick = () => setAddPlacePopupOpen(true);
   const handleEditAvatarClick = () => setEditAvatarPopupOpen(true);
 
+  const closeAllPopups = () => {
+    setEditProfilePopupOpen(false);
+    setAddPlacePopupOpen(false);
+    setEditAvatarPopupOpen(false);
+    setFullImagePopupOpen(false);
+    setConfirmDeletePopupOpen(false);
+    setInfoTooltipPopupOpen(false);
+    setSelectedCard({});
+  };
+
   const handleCardClick = (card) => {
     setSelectedCard(card);
     setFullImagePopupOpen(true);
@@ -58,6 +68,14 @@ function App(props) {
   const handleTrashClick = (card) => {
     setCardToDelete(card);
     setConfirmDeletePopupOpen(true);
+  };
+
+  const handleSubmit = (request) => {
+    setIsLoading(true);
+    request()
+      .then(closeAllPopups)
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
   };
 
   const handleCardLike = (card) => {
@@ -80,52 +98,36 @@ function App(props) {
   };
 
   const handleCardDelete = (card) => {
-    setIsLoading(true);
-    api
-      .deleteCard(card._id)
-      .then((newCard) => {
+    function makeRequest() {
+      return api.deleteCard(card._id).then((newCard) => {
         const newCards = cards.filter((c) => (c._id === card._id ? '' : newCard));
         setCards(newCards);
-        closeAllPopups();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+      });
+    }
+    handleSubmit(makeRequest);
   };
 
-  const handleUpdateUser = (info) => {
-    setIsLoading(true);
-    api
-      .setUserInfo(info)
-      .then((newUser) => {
-        setCurrentUser(newUser);
-        closeAllPopups();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+  const handleUpdateUser = (inputValues) => {
+    const makeRequest = () => {
+      return api.setUserInfo(inputValues).then(setCurrentUser);
+    };
+    handleSubmit(makeRequest);
   };
 
-  const handleUpdateAvatar = (avatar) => {
-    setIsLoading(true);
-    api
-      .changeAvatar(avatar)
-      .then((newAvatar) => {
-        setCurrentUser(newAvatar);
-        closeAllPopups();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+  const handleUpdateAvatar = (inputValues) => {
+    const makeRequest = () => {
+      return api.changeAvatar(inputValues).then(setCurrentUser);
+    };
+    handleSubmit(makeRequest);
   };
 
-  const handleAddPlaceSubmit = (card) => {
-    setIsLoading(true);
-    api
-      .postCard(card)
-      .then((newCard) => {
+  const handleAddPlaceSubmit = (inputValues) => {
+    const makeRequest = () => {
+      return api.postCard(inputValues).then((newCard) => {
         setCards([newCard, ...cards]);
-        closeAllPopups();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+      });
+    };
+    handleSubmit(makeRequest);
   };
 
   const handleRegisterUser = (email, password) => {
@@ -187,16 +189,6 @@ function App(props) {
   useEffect(() => {
     checkToken();
   }, []);
-
-  const closeAllPopups = () => {
-    setEditProfilePopupOpen(false);
-    setAddPlacePopupOpen(false);
-    setEditAvatarPopupOpen(false);
-    setFullImagePopupOpen(false);
-    setConfirmDeletePopupOpen(false);
-    setInfoTooltipPopupOpen(false);
-    setSelectedCard({});
-  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

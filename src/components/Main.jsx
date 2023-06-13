@@ -1,11 +1,10 @@
 import Card from './Card.jsx';
-import { useContext } from 'react'
+import { useContext } from 'react';
 import { CurrentUserContext } from '../context/CurrentUserContext.js';
-
 
 function Main(props) {
   const { onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCardLike, onCardDelete, cards } = props;
-  const currentUser = useContext(CurrentUserContext)
+  const currentUser = useContext(CurrentUserContext);
 
   return (
     <main className="content">
@@ -54,7 +53,7 @@ function Main(props) {
                 onCardClick={onCardClick}
                 onCardLike={onCardLike}
                 onCardDelete={onCardDelete}
-              ></Card>
+              />
             );
           })}
         </ul>
