@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import InfoTooltip from './InfoTooltip';
 import useValidation from '../hooks/useValidation';
 
 const Register = (props) => {
-  const { onRegister, isSuccess, isLoggedIn } = props;
+  const { onRegister, isLoggedIn } = props;
   const { values, handleChange, resetForm } = useValidation({ email: '', password: '' });
 
   function handleSubmit(e) {
@@ -22,6 +21,7 @@ const Register = (props) => {
         <form
           className="auth__form"
           name="auth-form"
+          onSubmit={handleSubmit}
         >
           <h1 className="auth__title">Регистрация</h1>
           <div className="auth__input-container">
@@ -49,7 +49,6 @@ const Register = (props) => {
           <button
             type="submit"
             className="auth__button"
-            onClick={handleSubmit}
           >
             Зарегистрироваться
           </button>
@@ -64,7 +63,6 @@ const Register = (props) => {
           </p>
         </form>
       </div>
-      <InfoTooltip isSuccess={isSuccess} />
     </div>
   );
 };

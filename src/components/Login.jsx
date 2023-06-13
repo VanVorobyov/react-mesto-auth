@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import useValidation from '../hooks/useValidation';
-import InfoTooltip from './InfoTooltip';
 
 const Login = (props) => {
-  const { onLogin, isSuccess, isLoggedIn } = props;
+  const { onLogin, isLoggedIn } = props;
   const { values, handleChange, resetForm } = useValidation({ email: '', password: '' });
 
   function handleSubmit(e) {
@@ -23,6 +22,7 @@ const Login = (props) => {
           name="auth-form"
           action="#"
           method="post"
+          onSubmit={handleSubmit}
         >
           <h1 className="auth__title">Вход</h1>
           <div className="auth__input-container">
@@ -50,13 +50,11 @@ const Login = (props) => {
           <button
             type="submit"
             className="auth__button"
-            onClick={handleSubmit}
           >
             Войти
           </button>
         </form>
       </div>
-      <InfoTooltip isSuccess={isSuccess} />
     </div>
   );
 };
