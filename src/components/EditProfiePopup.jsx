@@ -1,46 +1,33 @@
 import PopupWithForm from './PopupWithForm';
 import { useEffect } from 'react';
-import { useContext } from 'react'
+import { useContext } from 'react';
 import { CurrentUserContext } from '../context/CurrentUserContext.js';
 import useValidation from '../hooks/useValidation';
 
 function EditProfilePopup(props) {
-
-  const {isOpen, onClose, onUpdateUser, isLoading} = props
-  const {values, handleChange, errors, isValid, setValues, resetForm} = useValidation({name: '', about: ''})
-  const currentUser = useContext(CurrentUserContext)
-
-  useEffect(() => {
-    setValues({
-      name: currentUser.name,
-      workplace: currentUser.about
-  });
-  }, [currentUser, setValues]); 
-
+  const { isOpen, onClose, onUpdateUser, isLoading } = props;
+  const { values, handleChange, errors, isValid, setValues, resetForm } = useValidation({ name: '', about: '' });
+  const currentUser = useContext(CurrentUserContext);
 
   useEffect(() => {
     if (currentUser.name && currentUser.about) {
-        setValues({
-            name: currentUser.name,
-            about: currentUser.about
-        });
+      setValues({
+        name: currentUser.name,
+        about: currentUser.about,
+      });
     }
-    if (!isOpen)
-    resetForm();
-}, [currentUser.about, currentUser.name, isOpen, resetForm, setValues])
-
-
+    if (!isOpen) resetForm();
+  }, [currentUser.about, currentUser.name, isOpen, resetForm, setValues]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    if(isValid) {
+    if (isValid) {
       onUpdateUser({
         name: values.name,
         about: values.about,
       });
     }
-  } 
-
+  }
 
   return (
     <PopupWithForm
